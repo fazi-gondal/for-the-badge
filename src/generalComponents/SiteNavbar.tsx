@@ -23,7 +23,7 @@ function Navbar() {
   const { t } = useTranslation();
 
   const lightModeLogoUrl = "/logo/logo.svg";
-  const darkModeLogoUrl = "/logo/logo.svg";
+  const darkModeLogoUrl = "/logo/black.svg";
 
   const { colorMode, setColorMode } = useColorMode();
 
