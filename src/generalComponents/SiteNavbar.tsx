@@ -22,8 +22,8 @@ import { changeLanguage } from "i18next";
 function Navbar() {
   const { t } = useTranslation();
 
-  const lightModeLogoUrl = "logo.svg";
-  const darkModeLogoUrl = "logo.svg";
+  const lightModeLogoUrl = "/logo/logo.svg";
+  const darkModeLogoUrl = "/logo/logo.svg";
 
   const { colorMode, setColorMode } = useColorMode();
 

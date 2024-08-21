@@ -141,7 +141,7 @@ export default function BadgeGeneratorPage(): JSX.Element {
       panels: panels.toString(),
     });
 
-    return `https://forthebadge.com?${params.toString()}#/generator`;
+    return `https://ftbbuilder.vercel.app?${params.toString()}`;
   };
 
   const copyShareLink = () => {
