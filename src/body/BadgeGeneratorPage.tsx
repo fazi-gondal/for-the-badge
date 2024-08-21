@@ -110,7 +110,7 @@ export default function BadgeGeneratorPage(): JSX.Element {
     const serializer = new XMLSerializer();
     const svgStr = serializer.serializeToString(svgRef.current);
     const base64 = btoa(unescape(encodeURIComponent(svgStr)));
-    const md = `[![forthebadge](data:image/svg+xml;base64,${base64})](https://forthebadge.com)`;
+    const md = `[![Add your text here](data:image/svg+xml;base64,${base64})](Add your url here)`;
     navigator.clipboard.writeText(md).then(
       () => {
         toast({

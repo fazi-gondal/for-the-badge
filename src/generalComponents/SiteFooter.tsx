@@ -19,7 +19,7 @@ function SiteFooter() {
       >
         <HStack justifyContent="center" alignItems="center" mt="70px">
           <Text fontWeight={"extrabold"} fontSize="9" letterSpacing="2px">
-            2024 FOR THE BADGE™, LLC
+            2024 Code With Fazi 🧡.
           </Text>
         </HStack>
         <HStack justifyContent="center" alignItems="center" mt="10px">

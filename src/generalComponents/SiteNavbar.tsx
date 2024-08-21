@@ -22,8 +22,8 @@ import { changeLanguage } from "i18next";
 function Navbar() {
   const { t } = useTranslation();
 
-  const lightModeLogoUrl = "https://forthebadge.com/images/logo_black.svg";
-  const darkModeLogoUrl = "https://forthebadge.com/images/logo.svg";
+  const lightModeLogoUrl = "logo.svg";
+  const darkModeLogoUrl = "logo.svg";
 
   const { colorMode, setColorMode } = useColorMode();
 
@@ -85,7 +85,7 @@ function Navbar() {
         <Stack flex={{ base: 1, md: 0 }} justify={"flex-end"} direction={"row"}>
           <Button
             as={Link}
-            href="https://forthebadge.com"
+            href="https://faziblog.pages.dev/"
             isExternal
             display={{ base: "none", md: "inline-flex" }}
             fontSize={"sm"}
@@ -94,7 +94,7 @@ function Navbar() {
           >
             {t("navbar.credit")}
           </Button>
-          <Button
+          {/* <Button
             as={Link}
             href="https://github.com/forthebadge/for-the-badge"
             isExternal
@@ -104,7 +104,7 @@ function Navbar() {
             leftIcon={<FaGithub />}
           >
             {t("navbar.contribute")}
-          </Button>
+          </Button> */}
 
           <ButtonGroup isAttached>
             <Menu>
