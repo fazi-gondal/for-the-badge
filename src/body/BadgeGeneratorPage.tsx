@@ -26,7 +26,7 @@ export default function BadgeGeneratorPage(): JSX.Element {
   const [isDownloadLoading, setIsDownloadLoading] = useState(false);
   const [isShareLoading, setIsShareLoading] = useState(false);
 
-  const [panels, setPanels] = useState(2);
+  const [panels, setPanels] = useState(2); // Default to two panels
 
   const primaryTextRef = useRef<SVGTextElement | null>(null);
   const secondaryTextRef = useRef<SVGTextElement | null>(null);
@@ -54,7 +54,7 @@ export default function BadgeGeneratorPage(): JSX.Element {
         setTertiaryWidth(tertiaryTextRef.current.getBBox().width + 20);
       }
     }
-  }, [primaryLabel, secondaryLabel, tertiaryLabel]);
+  }, [primaryLabel, secondaryLabel, tertiaryLabel, panels]);
 
   useEffect(() => {
     const params = new URLSearchParams(window.location.search);
@@ -110,7 +110,7 @@ export default function BadgeGeneratorPage(): JSX.Element {
     const serializer = new XMLSerializer();
     const svgStr = serializer.serializeToString(svgRef.current);
     const base64 = btoa(unescape(encodeURIComponent(svgStr)));
-    const md = `[![Add your text here](data:image/svg+xml;base64,${base64})](Add your url here)`;
+    const md = `[![Add your text here](data:image/svg+xml;base64,${base64})](https://ftbbuilder.vercel.app)`;
     navigator.clipboard.writeText(md).then(
       () => {
         toast({
@@ -176,6 +176,17 @@ export default function BadgeGeneratorPage(): JSX.Element {
         <Button
           size="sm"
           onClick={() => {
+            setPanels(1);
+            setSecondaryLabel("");
+            setTertiaryLabel("");
+          }}
+        >
+          {t("One Panel")}
+        </Button>
+        <Button
+          size="sm"
+          ml={2}
+          onClick={() => {
             setPanels(2);
             setTertiaryLabel("");
           }}
@@ -198,133 +209,137 @@ export default function BadgeGeneratorPage(): JSX.Element {
       >
         <Flex
           direction="column"
-          width="50%"
-          pr={2}
+          width={panels === 1 ? "100%" : "50%"}
+          pr={panels === 1 ? 0 : 2}
           alignItems="center"
           justifyContent="center"
         >
-          <Flex direction="column" alignItems="flex-start">
-            <Text fontSize="xl" mb={2} fontWeight="bold">
-              {t("badgeGenerator.primary")}
-            </Text>
-            <Input
-              placeholder={t("badgeGenerator.sampleText")}
-              mb={2}
-              value={primaryLabel}
-              onChange={(e) => setPrimaryLabel(e.target.value)}
-            />
-            <Flex justifyContent="space-between" mt={2}>
-              <Flex align="center" mr={4}>
-                <Popover>
-                  <PopoverTrigger>
-                    <Circle
-                      size="30px"
-                      backgroundColor={primaryBGColor}
-                      border="2px solid black"
-                      mr={2}
-                      cursor="pointer"
-                    />
-                  </PopoverTrigger>
-                  <PopoverContent width="220px">
-                    <SketchPicker
-                      color={primaryBGColor}
-                      onChangeComplete={(color) => setPrimaryBGColor(color.hex)}
-                    />
-                  </PopoverContent>
-                </Popover>
-                <Text ml={2}>{t("badgeGenerator.backgroundColor")}</Text>
-              </Flex>
-              <Flex align="center">
-                <Popover>
-                  <PopoverTrigger>
-                    <Circle
-                      size="30px"
-                      backgroundColor={primaryTextColor}
-                      border="2px solid black"
-                      mr={2}
-                      cursor="pointer"
-                    />
-                  </PopoverTrigger>
-                  <PopoverContent width="220px">
-                    <SketchPicker
-                      color={primaryTextColor}
-                      onChangeComplete={(color) =>
-                        setPrimaryTextColor(color.hex)
-                      }
-                    />
-                  </PopoverContent>
-                </Popover>
-                <Text ml={2}>{t("badgeGenerator.textColor")}</Text>
+          {panels >= 1 && (
+            <Flex direction="column" alignItems="flex-start">
+              <Text fontSize="xl" mb={2} fontWeight="bold">
+                {t("badgeGenerator.primary")}
+              </Text>
+              <Input
+                placeholder={t("badgeGenerator.sampleText")}
+                mb={2}
+                value={primaryLabel}
+                onChange={(e) => setPrimaryLabel(e.target.value)}
+              />
+              <Flex justifyContent="space-between" mt={2}>
+                <Flex align="center" mr={4}>
+                  <Popover>
+                    <PopoverTrigger>
+                      <Circle
+                        size="30px"
+                        backgroundColor={primaryBGColor}
+                        border="2px solid black"
+                        mr={2}
+                        cursor="pointer"
+                      />
+                    </PopoverTrigger>
+                    <PopoverContent width="220px">
+                      <SketchPicker
+                        color={primaryBGColor}
+                        onChangeComplete={(color) => setPrimaryBGColor(color.hex)}
+                      />
+                    </PopoverContent>
+                  </Popover>
+                  <Text ml={2}>{t("badgeGenerator.backgroundColor")}</Text>
+                </Flex>
+                <Flex align="center">
+                  <Popover>
+                    <PopoverTrigger>
+                      <Circle
+                        size="30px"
+                        backgroundColor={primaryTextColor}
+                        border="2px solid black"
+                        mr={2}
+                        cursor="pointer"
+                      />
+                    </PopoverTrigger>
+                    <PopoverContent width="220px">
+                      <SketchPicker
+                        color={primaryTextColor}
+                        onChangeComplete={(color) =>
+                          setPrimaryTextColor(color.hex)
+                        }
+                      />
+                    </PopoverContent>
+                  </Popover>
+                  <Text ml={2}>{t("badgeGenerator.textColor")}</Text>
+                </Flex>
               </Flex>
             </Flex>
-          </Flex>
+          )}
         </Flex>
 
-        <Flex
-          direction="column"
-          width="50%"
-          pl={2}
-          alignItems="center"
-          justifyContent="center"
-        >
-          <Flex direction="column" alignItems="flex-start">
-            <Text fontSize="xl" mb={2} fontWeight="bold">
-              {t("badgeGenerator.secondary")}
-            </Text>
-            <Input
-              placeholder={t("badgeGenerator.sampleText")}
-              mb={2}
-              value={secondaryLabel}
-              onChange={(e) => setSecondaryLabel(e.target.value)}
-            />
-            <Flex justifyContent="space-between" mt={2}>
-              <Flex align="center" mr={4}>
-                <Popover>
-                  <PopoverTrigger>
-                    <Circle
-                      size="30px"
-                      backgroundColor={secondaryBGColor}
-                      border="2px solid black"
-                      mr={2}
-                      cursor="pointer"
-                    />
-                  </PopoverTrigger>
-                  <PopoverContent width="220px">
-                    <SketchPicker
-                      color={secondaryBGColor}
-                      onChangeComplete={(color) =>
-                        setSecondaryBGColor(color.hex)
-                      }
-                    />
-                  </PopoverContent>
-                </Popover>
-                <Text ml={2}>{t("badgeGenerator.backgroundColor")}</Text>
-              </Flex>
-              <Flex align="center">
-                <Popover>
-                  <PopoverTrigger>
-                    <Circle
-                      size="30px"
-                      backgroundColor={secondaryTextColor}
-                      border="2px solid black"
-                      mr={2}
-                      cursor="pointer"
-                    />
-                  </PopoverTrigger>
-                  <PopoverContent width="220px">
-                    <SketchPicker
-                      color={secondaryTextColor}
-                      onChangeComplete={(color) =>
-                        setSecondaryTextColor(color.hex)
-                      }
-                    />
-                  </PopoverContent>
-                </Popover>
-                <Text ml={2}>{t("badgeGenerator.textColor")}</Text>
+        {panels >= 2 && (
+          <Flex
+            direction="column"
+            width={panels === 1 ? "100%" : "50%"}
+            pl={panels === 1 ? 0 : 2}
+            alignItems="center"
+            justifyContent="center"
+          >
+            <Flex direction="column" alignItems="flex-start">
+              <Text fontSize="xl" mb={2} fontWeight="bold">
+                {t("badgeGenerator.secondary")}
+              </Text>
+              <Input
+                placeholder={t("badgeGenerator.sampleText")}
+                mb={2}
+                value={secondaryLabel}
+                onChange={(e) => setSecondaryLabel(e.target.value)}
+              />
+              <Flex justifyContent="space-between" mt={2}>
+                <Flex align="center" mr={4}>
+                  <Popover>
+                    <PopoverTrigger>
+                      <Circle
+                        size="30px"
+                        backgroundColor={secondaryBGColor}
+                        border="2px solid black"
+                        mr={2}
+                        cursor="pointer"
+                      />
+                    </PopoverTrigger>
+                    <PopoverContent width="220px">
+                      <SketchPicker
+                        color={secondaryBGColor}
+                        onChangeComplete={(color) =>
+                          setSecondaryBGColor(color.hex)
+                        }
+                      />
+                    </PopoverContent>
+                  </Popover>
+                  <Text ml={2}>{t("badgeGenerator.backgroundColor")}</Text>
+                </Flex>
+                <Flex align="center">
+                  <Popover>
+                    <PopoverTrigger>
+                      <Circle
+                        size="30px"
+                        backgroundColor={secondaryTextColor}
+                        border="2px solid black"
+                        mr={2}
+                        cursor="pointer"
+                      />
+                    </PopoverTrigger>
+                    <PopoverContent width="220px">
+                      <SketchPicker
+                        color={secondaryTextColor}
+                        onChangeComplete={(color) =>
+                          setSecondaryTextColor(color.hex)
+                        }
+                      />
+                    </PopoverContent>
+                  </Popover>
+                  <Text ml={2}>{t("badgeGenerator.textColor")}</Text>
+                </Flex>
               </Flex>
             </Flex>
           </Flex>
-        </Flex>
+        )}
 
         {panels === 3 && (
           <Flex
@@ -413,19 +428,23 @@ export default function BadgeGeneratorPage(): JSX.Element {
           width={
             panels === 3
               ? primaryWidth + secondaryWidth + tertiaryWidth
-              : primaryWidth + secondaryWidth
+              : panels === 2
+              ? primaryWidth + secondaryWidth
+              : primaryWidth
           }
           height="35"
           viewBox={`0 0 ${
             panels === 3
               ? primaryWidth + secondaryWidth + tertiaryWidth
-              : primaryWidth + secondaryWidth
+              : panels === 2
+              ? primaryWidth + secondaryWidth
+              : primaryWidth
           } 35`}
         >
           <rect width={primaryWidth} height="35" fill={primaryBGColor} />
           <rect
             x={primaryWidth}
-            width={secondaryWidth}
+            width={panels === 1 ? 0 : secondaryWidth}
             height="35"
             fill={secondaryBGColor}
           />
@@ -442,21 +461,22 @@ export default function BadgeGeneratorPage(): JSX.Element {
           >
             {(primaryLabel || "SAMPLE").toUpperCase()}
           </text>
-          <text
-            ref={secondaryTextRef}
-            x={primaryWidth + secondaryWidth / 2}
-            y="17.5"
-            fontSize="12"
-            fontFamily="'Montserrat', sans-serif"
-            fill={secondaryTextColor}
-            textAnchor="middle"
-            fontWeight={900}
-            alignmentBaseline="middle"
-            letterSpacing="2"
-          >
-            {(secondaryLabel || "TEXT").toUpperCase()}
-          </text>
-
+          {panels >= 2 && (
+            <text
+              ref={secondaryTextRef}
+              x={primaryWidth + secondaryWidth / 2}
+              y="17.5"
+              fontSize="12"
+              fontFamily="'Montserrat', sans-serif"
+              fill={secondaryTextColor}
+              textAnchor="middle"
+              fontWeight={900}
+              alignmentBaseline="middle"
+              letterSpacing="2"
+            >
+              {(secondaryLabel || "TEXT").toUpperCase()}
+            </text>
+          )}
           {panels === 3 && (
             <>
               <rect
